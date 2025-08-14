@@ -14,9 +14,10 @@ provider "azurerm" {
 
 # Resource block
 # Create a resource group
-resource "azurerm_resource_group" "nmyrg1" {
+resource "azurerm_resource_group" "myrg1" {
     name = "rgazeusnonprod"
     location = "East US 2"
 
   
+
 }
