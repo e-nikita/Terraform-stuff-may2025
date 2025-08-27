@@ -1,3 +1,4 @@
+<<<<<<< HEAD:c3-vnet.tf
 <<<<<<< HEAD
 # create virtual network for our azure resources
 resource "azurerm_virtual_network" "testingvnet" {
@@ -47,6 +48,8 @@ resource "azurerm_network_interface" "my-nic" {
 }
 
 =======
+=======
+>>>>>>> 60c9ac0 (modified files):Windows-VM/c3-vnet.tf
 # create virtual network for our azure resources
 resource "azurerm_virtual_network" "testingvnet" {
     name = "testingvnet1"
@@ -112,4 +115,7 @@ resource "azurerm_network_security_group" "mynsg" {
     }
   
 }
+<<<<<<< HEAD:c3-vnet.tf
 >>>>>>> 50ab191 (newly updated file)
+=======
+>>>>>>> 60c9ac0 (modified files):Windows-VM/c3-vnet.tf
