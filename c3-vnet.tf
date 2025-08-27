@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # create virtual network for our azure resources
 resource "azurerm_virtual_network" "testingvnet" {
     name = "testingvnet1"
@@ -45,6 +45,7 @@ resource "azurerm_network_interface" "my-nic" {
       public_ip_address_id = azurerm_public_ip.my-publicip.name
     }
 }
+
 
 =======
 # create virtual network for our azure resources
@@ -112,4 +113,3 @@ resource "azurerm_network_security_group" "mynsg" {
     }
   
 }
->>>>>>> 50ab191 (newly updated file)
