@@ -1,0 +1,44 @@
+# Terraform input variables basic
+Step 1 : Introduction
+Create below resources by using input variables
+1. create resource group
+2. create virtual network
+3. create version file
+4. create an input variable file.
+Step 2 : c2-variables.tf - create variable file
+# Input Variables
+
+# 1. Business unit Name
+variable "business_unit" {
+    description = "Business Unit Name"
+    type = string
+    default = "HR"
+}
+
+# 2. Environment Name
+variable "environment_name" {
+    description = " Environment Name "
+    type = string
+    default = "test"
+}
+
+# 3. Resource Group Name
+variable "resource_group_name" {
+    description = "Resources Group Name"
+    type = string
+    default = "myrg"
+}
+
+# 4. Resource Group Location
+variable "resource_group_location" {
+    description = "Resource Group Location"
+    type = string
+    default = "west europe"
+}
+# 5. Virtual Network
+variable "virtual_network" {
+    description = "Virtual Network"
+    type = string
+    default = "myvnet"
+}
+
