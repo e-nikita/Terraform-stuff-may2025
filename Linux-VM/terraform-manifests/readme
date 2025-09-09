@@ -1,0 +1,172 @@
+#Provisioning Azure Linux virtual machine using terraform
+
+Step 1: Introduction
+We will create below resources in this module.
+1. Resource Group
+2. Azure Virtual Network
+3. Azure Subnets
+4. Azure Public IP
+5. Network interface
+6. Linux Virtual Machine
+7. Random_string Resource
+We will use custom_data argumemnt in azure linux virtual machine to install simple web server during creation of vm.
+# Terraform filebase64 function  #This function reads the file and encodes its contents in Base64, which is the format Azure expects for custom_data.
+
+8. custom_data: This is a property of the VM resource that allows you to pass a script or configuration that runs when the VM boots for the first time. It's commonly used to:
+Install packages
+Configure services
+Set up users
+Run shell commands
+
+
+
+ Step 2: Create SSH keys
+ # create folder
+ cd terraform-manifests/
+ mkdir ssh-keys
+ # create SSH Key
+ cd ssh-keys
+ ssh-keygen \
+    -m PEM \                    #output in PEM format (required for some cloud service)
+    -t tsa \                    # RSA key type
+    -b 4096 \                   # 4096 key-bytes for strong security
+    -C "azureuser@myserver" \   # comment for identification
+    -f terraform-user.pem       # output file name
+
+  # This will generate below output files
+  terraform-azure.pem  -  Private key
+  terraform-azure.pem.pub  -  Public key > rename as terraform-azure.pub
+ 
+  # List files
+  ls -lrt ssh-keys \
+
+  # Change permission of files
+  chmod 400 terraform-azure.pem
+
+Step 3: c1-version.tf  Create terraform and provider block
+Create terraform  block
+Create  provider block
+Create random resource block
+
+# terraform block
+terraform {
+    required_version = ">= 1.0.0"
+    required_providers{
+        azurerm {
+            source = hashicorp\azurerm
+            version = ">=2.0"
+        }
+    }
+    
+}
+
+# Provider block
+provider "azurerm" {
+    features{}
+}
+
+# Random resource block
+resource "random_string" "myrandom" {
+    length = 6
+    upper = False
+    lower = False
+    number = False
+}
+
+Step 4: c2-resourcegrp.tf - Create resource group
+resource "azurerm_resource_group" "myrg" {
+    name = "myrg1"
+    location = "west-europe"  
+}
+
+Step 5: c3-vnet.tf - Create virtual network
+resource "azurerm_virtual_network" "myvnet" {
+    name = "myvnet1"
+    location = azurerm_resource_group.myrg.location
+    address_space = ["10.0.0.0/16"]
+    resopurce_group_name = azurerm_resource_group.myrg.name
+}
+
+# Create subnet
+resource "azurerm_virtual_subnet" "mysubnet" {
+    name = "mysubnet1"
+    virtual_network_name = azurerm_virtual_network.myvnet.name
+    resource_group_name = azurerm_resource_group.myrg.name
+    address_prefixes = ["10.0.2.0/24"]
+}
+
+# Create public ip address
+resource "azurerm_public_ip" "mypublicip" {
+    name = "mypublicip1"
+    resource_group_name = azurerm_resource_group.myrg.name
+    location = azurerm_resource_group.myrg.location
+    SKU = "Standard"
+    allocation_method = "Static"
+    domain_name_label = "appvm1-${radom_string.myrandom.id}
+    tags {
+        envirnoment = "dev"
+    }
+}
+
+# Create Network Interface
+resource "azurerm_networl_interface" "mynic" {
+    name = "myvmnic1"
+    location = azurerm_resource_group.myrg.location
+    resource_group_name = azurerm_resource_group.myrg.name
+    virtual_network_name = azurerm_virtual_network.myvnet.name
+    ip_configuration {
+        name = "internal"
+        subnet_id = azurerm_virtual_subnet.mysubnet.id
+        private_ip_address_allocation = "Static"
+        public_ip_address_id = azurerm_public_ip.mypublicip.id  
+        # its optional, use when acces vm externally.
+    }
+}
+
+Step 6: c4-Linux-vm.tf  - Create a linux virtual machine
+resource "azurerm_linux_virtual_machine" "mylinuxvm" {
+    name = "mylinuxvm1"
+    resource_group_name = azurerm_resource_group.myrg.name
+    location = azurerm_resource_group.myrg.location
+    size = "standard_DS1_V2"
+    network_interface_ids = azurerm_network_interface.mynic.id
+    admin_ssh_key {
+        username = "azureuser"
+        public_key = (file ${"path.module}/ssh-keys/terraform-azure.pub)
+    }
+    os_disk {
+        name = "osdisk"
+        storage_account = "standard LRS"
+        cache = "ReadWrite"
+    }
+    source_image_referennce {
+        publisher = "RedHat"
+        offer = "RHEL"
+        SKU = "83-gen2"
+        version = "latest"
+    }
+    custom_data = filebase64 ("${path.modue}app-script/app1-cloud.init.txt")
+}
+
+Step 7 : app1-cloud-init.txt
+# cloud configuration
+#cloud-config
+package_upgrade: false
+packages:
+  - httpd
+write_files:
+  - owner: root:root 
+    path: /var/www/html/index.html
+    content: |
+      <h1>Welcome to StackSimplify - APP-1</h1>
+  - owner: root:root 
+    path: /var/www/html/app1/index.html
+    content: |
+      <!DOCTYPE html> <html> <body style="background-color:rgb(250, 210, 210);"> <h1>Welcome to Stack Simplify - APP-1</h1> <p>Terraform Demo</p> <p>Application Version: V1</p> </body></html>      
+runcmd:
+  - sudo systemctl start httpd  
+  - sudo systemctl enable httpd
+  - sudo systemctl stop firewalld
+  - sudo mkdir /var/www/html/app1 
+  - [sudo, curl, -H, "Metadata:true", --noproxy, "*", "http://169.254.169.254/metadata/instance?api-version=2020-09-01", -o, /var/www/html/app1/metadata.html]
+
