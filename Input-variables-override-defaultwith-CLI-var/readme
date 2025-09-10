@@ -1,0 +1,12 @@
+# Override default variable values using CLI argument -var
+We are going to override the default values defined in c2-variables.tf
+by providing new values using the -var argument using CLI
+
+# Option-1 (Always provide -var for both plan and apply)
+# Review the terraform plan
+
+terraform plan -var="resoure_group_name=demorg" -var="resoure_group_location=westus" 
+-var="virtual_network_name=demovnet" -var="subnet_name=demosubnet" 
+
+terraform apply -var="resoure_group_name=demorg" -var="resoure_group_location=westus" 
+-var="virtual_network_name=demovnet" -var="subnet_name=demosubnet"
