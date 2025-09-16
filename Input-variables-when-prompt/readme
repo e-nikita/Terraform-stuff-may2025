@@ -1,0 +1,8 @@
+# Create a variable when prompt during terraform plan or CLI
+
+# Introduction :
+Provide input variables when prompted during terraform plan or CLI
+
+# Adding new variable subnet_name in c2-variable file
+
+
