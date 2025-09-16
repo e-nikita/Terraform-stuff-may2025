@@ -1,0 +1,13 @@
+# Terraform input variables by using terraform.tfvars
+# create a file name terraform.tfvars and define variables.
+if the file name is terraform.tfvars , terraform will auto-load variables present in this
+file by overriding default and c2-variables.tf file.
+
+
+business unit = "it"
+resource_group_name = "rg-tfvars"
+resource_group_location = "central india"
+environment = "stg"
+virtual_network_name = "vnet-tfvars"
+subnet_name = "subnet-tfvars"
+
