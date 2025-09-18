@@ -1,0 +1,4 @@
+# Provide input variables by using auto.tfvars file
+
+we will create a file with .auto.tfvars extension.
+With this extension, whatever may be the file name, the variables inside these files will be auto loaded during terraform plan or apply.
