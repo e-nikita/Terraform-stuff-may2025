@@ -1,0 +1,15 @@
+# depends_on Meta-Argument
+
+The "depends_on" meta-argument establishes dependencies between resources that do not directly reference one another. Use the depends_on argument to explicitly set the order in which Terraform creates resources.
+
+example :
+
+Here we will create public ip with depends_on argument with virtual network and subnet.
+
+1. Public IP Resource will get created only afer Virtual Network and Subnet Resource got created.
+2. As we have defined explicit dependency `depends_on` in Public IP Resource, it will wait till those two other resources got created. 
+3. Important Point to remember is "Explicitly specifying a dependency is only necessary when a resource or module relies on some other resource's behavior but doesn't access any of that resource's data in its arguments."
+
+# create public ip
+
+resource "azurerm_public
