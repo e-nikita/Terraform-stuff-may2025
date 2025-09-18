@@ -9,4 +9,33 @@ Introduction :
  specific files will be picked from specific env.tfvars files.
  dev.tfvars: environment and resoure_group_location variable will be picked from this file
  qa.tfvars: environment and resoure_group_location variable will be picked from this file
-# 
+****************
+# terraform.tfvars
+business_unit = "IT"
+resoure_group_name = "rg-tfvars"
+virtual_network_name = "vnet-tfvars"
+subnet_name = "subnet-tfvars"
+
+# dev.tfvars
+resoure_group_location = "central india"
+environment = "dev"
+
+# qa.tfvars
+resoure_group_location = "east asia"
+environment = "stage"
+
+********************
+# terraform init
+# terraform validate
+# terrafirm plan -var-file = "dev.tfvars"
+# terraform plan -var-file = "qa.tfvars"
+*******************
+# terraform apply -var-file = "dev.tfvars"
+# terraform apply -var-file = "qatfvars"   ## DONT DO THIS FROM SAME WORKING DIRECTORY AS OF NOW
+
+Observation
+1. When we run the above command with "qa.tfvars" it will try to replace current dev resources with qa which is not right fundamentally. This is due to Resources Local Name reference is same for both Dev and QA. 
+2. Later when we learn Terraform Workspaces concept we can create multiple environments in same working directory under different workspaces. 
+3. As of now we didn't reach that state of learning. 
+4. In next sections of the course we will learn. 
+
