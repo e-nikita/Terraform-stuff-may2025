@@ -1,0 +1,8 @@
+# terraform resource Meta-Argument count
+
+# In general, 1 Azure VM Instance Resource in Terraform equals to 1 VM Instance in Azure Cloud
+and 5 Azure VM Instance Resources = 5 Azure VM Instances in Azure Cloud
+
+# With Meta-Argument count this is going to very simple.
+
+# Just mention count argument and create multiple resources.
