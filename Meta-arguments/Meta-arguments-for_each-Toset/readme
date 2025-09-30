@@ -1,0 +1,8 @@
+# understand toset function with for_each meta-argument.
+
+# Terraform (toset) function
+'toset' function convert its argument to a set value. In short, it does a explicit type   conversion to normalize the types.
+# Note : 
+Terraform's concept of a set requires all of the elements to be of the same type, mixed-typed elements will be converted to the most general type.
+
+Set collections are unordered and cannot contain duplicate values, so the ordering of the argument elements is lost and any duplicate values are coalesced.
