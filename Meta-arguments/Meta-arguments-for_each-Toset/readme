@@ -6,3 +6,28 @@
 Terraform's concept of a set requires all of the elements to be of the same type, mixed-typed elements will be converted to the most general type.
 
 Set collections are unordered and cannot contain duplicate values, so the ordering of the argument elements is lost and any duplicate values are coalesced.
+
+# Terraform console
+terraform console
+
+# All Strings to Strings
+toset(["kalyan", "reddy", "daida"])
+
+# Mixed Type (Strings and Numbers) - Converted to Strings 
+toset(["kalyan", "reddy", 123, 456])
+
+# Removes duplicates (Set collections are unordered and cannot contain duplicate values,) 
+toset(["z", "k", "r", "a", "k"])
+
+# Also arranges in the order (The order provided will be gone) - In short set collections are unordered
+toset([4, 100, 20, 11, 21, 7, 6, 4, 100])
+
+# c1-version.tf file remain same
+# c2-resourcegrp.tf will be changed
+
+resource "azurerm_resource_group" "myrg" {
+    for_each = toset(["east asia", "west europe", "east us2"])
+        name = "myrg-$(each.index)"
+        location = each.value
+    
+}
