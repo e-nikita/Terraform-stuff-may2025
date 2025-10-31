@@ -20,3 +20,12 @@ Step2 : Create c1version.tf file
    provider "azurerm" {
     features{}
    }
+
+
+   *** querey terraformm output
+   command-
+   terraform output
+   terraform output resource_name
+   terraform output virtual_network_name
+
+   here we can add sensitive parameter in output file to hide sensitive value
