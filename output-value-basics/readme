@@ -1,0 +1,12 @@
+Step1 : Introduction
+* Understand about Output Values and implement them
+* Query outputs using terraform output
+* Understand about redacting secure attributes in output values
+* Generate machine-readable output
+* You can export both Argument & Attribute References
+* Redact the sensitive outputs using sensitve = true in output block
+
+Step2 : Create c1version.tf file
+   terraform {
+    required_version
+   }
