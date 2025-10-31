@@ -1,0 +1,28 @@
+# use splat expression with count meta-argument
+# Splat Expression : Splat expression is use to extract a list of attribute values from a collection of resources, data sources, or variables. It uses the asterisk symbol (*) to iterate over elements in a list or set and retrieve a specific attribute from each element.
+
+# Splat expressions are particularly useful when:
+Working with count:
+* When you create multiple instances of a resource using count, a splat expression allows you to easily get a list of a particular attribute (e.g., id, private_ip) from all those instances.
+* Extracting attributes from a list of objects:
+If you have a list of complex objects (e.g., a list of security group rules), you can use a splat expression to extract a specific attribute from each object in that list.
+Syntax:
+* The general syntax for a splat expression is:
+<COLLECTION>[*].<ATTRIBUTE>
+
+*** <COLLECTION>: This refers to the list or set of resources, data sources, or variable
+                  values you are operating on.
+    [*]: This is the splat operator, indicating that you want to iterate over all elements
+         in the collection.
+    <ATTRIBUTE>: This is the specific attribute you want to extract from each element.
+
+*** Example ***
+resource "azurerm_virtual_machine" "myvm" {
+    count = 3
+    name = "myvm_$[count.index]"
+    resource_group_name = var.resource_group
+}
+
+output "virtual_machine_ips" {
+    value = azurerm_virtual_machine.myvm[*]private_ip
+}
