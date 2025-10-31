@@ -4,15 +4,17 @@ resource "azurerm_windows_virtual_machine" "mywinvm" {
     name = "mywintestvm1"
     location = azurerm_resource_group.testingrg.location
     resource_group_name = azurerm_resource_group.testingrg.name
-    size = "standard_D4sv5"
-    network_interface_ids = azurerm_network_interface.my-nic.ids
-    admin_username = "testuser"
-    admin_password = azurerm_key_vault.mytestkeyvault.id
+    size = "standard_D2_v5"
+    network_interface_ids = [azurerm_network_interface.my-nic.id]
+    admin_username = var.admin_username
+    admin_password = var.admin_password
+    #admin_username = "testuser"
+    #admin_password = azurerm_key_vault.mytestkeyvault.id
 
     os_disk {
       name = "OSdisk"
-      storage_account_type = "standard_LRS"
-      caching = "Read/Write"
+      storage_account_type = "Standard_LRS"
+      caching = "ReadWrite"
     }
     source_image_reference {
       publisher = "MicrosoftWindowsServer"

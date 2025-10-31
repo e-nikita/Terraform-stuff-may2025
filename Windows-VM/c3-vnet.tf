@@ -26,7 +26,7 @@ resource "azurerm_public_ip" "my-publicip" {
     name = "my-public-ip-1"
     resource_group_name = azurerm_resource_group.testingrg.name
     location = azurerm_resource_group.testingrg.location
-    allocation_method = "Dynamic"
+    allocation_method = "Static"
     tags = {
         environment = "dev"
     } 
@@ -41,8 +41,8 @@ resource "azurerm_network_interface" "my-nic" {
     ip_configuration {
       name = "internet"
       subnet_id = azurerm_subnet.mysubnet.id
-      private_ip_address_allocation = "static"
-      public_ip_address_id = azurerm_public_ip.my-publicip.name
+      private_ip_address_allocation = "Dynamic"
+      public_ip_address_id = azurerm_public_ip.my-publicip.id
     }
 }
 
