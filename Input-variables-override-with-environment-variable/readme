@@ -3,7 +3,7 @@
 export TF_VAR_Variable_name = value
  # set environment variables ;
  export TF_VAR_resource_group_name = newrg
- export TF_VAR_virtual_network_name = newvnet
+ export TF_VAR_virtual_network_name = newvnetstatus
  export TF_VAR_resource_group_location = eastus
  export TF_VAR_subnet_name = newsubnet
  echo $TF_VAR_resource_group_name, $TF_VAR_resource_group_location, $TF_VAR_subnet_name, $TF_VAR_virtual_network_name

@@ -11,3 +11,5 @@ output "virtual_network_name" {
   sensitive = true  # hide sensitive info. i.e when you run terraform output vnet name,
                     # # it will provide info by hiding details.
 }
+
+
